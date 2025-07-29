@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>永續知識小遊戲</title>
+  <style>
+    body {
+      font-family: "Microsoft JhengHei", sans-serif;
+      background-color: #e6f2ec;
+      color: #333;
+      text-align: center;
+      padding: 30px;
+    }
+    .container {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2e7d32;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #81c784;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #66bb6a;
+    }
+    .result {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌱 永續知識小遊戲</h1>
+    <div id="quiz">
+      <p id="question">題目載入中...</p>
+      <div id="choices"></div>
+    </div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "哪一項屬於再生能源？",
+        choices: ["煤炭", "天然氣", "太陽能", "核能"],
+        answer: "太陽能"
+      },
+      {
+        question: "醫療廢棄物應該如何處理？",
+        choices: ["一般垃圾分類", "隨意丟棄", "依照規定分類與焚化", "埋進土裡"],
+        answer: "依照規定分類與焚化"
+      },
+      {
+        question: "ESG 中的 S（社會）是指？",
+        choices: ["社交媒體行銷", "社會責任與員工照護", "社會主義", "社區建設投資報酬率"],
+        answer: "社會責任與員工照護"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("question").textContent = q.question;
+      const choicesContainer = document.getElementById("choices");
+      choicesContainer.innerHTML = "";
+
+      q.choices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.textContent = choice;
+        btn.onclick = () => checkAnswer(choice);
+        choicesContainer.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      const resultDiv = document.getElementById("result");
+
+      if (selected === correct) {
+        score++;
+        resultDiv.textContent = "✅ 答對了！";
+      } else {
+        resultDiv.textContent = "❌ 答錯了，正確答案是：" + correct;
+      }
+
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        setTimeout(() => {
+          resultDiv.textContent = "";
+          showQuestion();
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          document.getElementById("quiz").innerHTML = `<h2>🎉 遊戲結束，你的得分是：${score}/${questions.length}</h2>`;
+          resultDiv.textContent = "";
+        }, 1500);
+      }
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
